@@ -22,14 +22,18 @@ impl ForegroundExecutor {
         self.tasklist.push(job);
     }
     fn execute(&mut self) {
+        println!("execute task for foreground");
         for f in &self.tasklist {
+            println!("exeucting");
             f();
         }
+        &self.tasklist.clear();
     }
 }
 
 impl Executor for ForegroundExecutor {
     fn submit(&mut self, task: Box<Fn()>) -> i32 {
+        println!("submitting task for foreground");
         self.add_job(task);
         1
     }
@@ -44,8 +48,8 @@ fn main() {
 
     let mut fe = ForegroundExecutor{ tasklist: Vec::new() };
     fe.submit(Box::new(|| println!("foreground 1")));
-    fe.execute();
     fe.submit(Box::new(|| println!("foreground 2")));
+    fe.execute();
 
     fe.execute();
 }
